@@ -603,6 +603,51 @@ const watchlist = [
     price: "Pending",
     move: 0,
     why: "Newly added to tracker; price will populate on the next market data refresh."
+  },
+  {
+    ticker: "CSCO",
+    name: "Cisco Systems",
+    type: "stock",
+    tag: "Technology",
+    price: "Pending",
+    move: 0,
+    why: "Newly added to tracker; price will populate on the next market data refresh."
+  },
+  {
+    ticker: "CIEN",
+    name: "Ciena Corporation",
+    type: "stock",
+    tag: "Technology",
+    price: "Pending",
+    move: 0,
+    why: "Newly added to tracker; price will populate on the next market data refresh."
+  },
+  {
+    ticker: "FJTSY",
+    name: "Fujitsu Ltd ADR",
+    type: "stock",
+    tag: "Technology",
+    price: "Pending",
+    move: 0,
+    why: "Newly added to tracker; price will populate on the next market data refresh."
+  },
+  {
+    ticker: "T",
+    name: "AT&T",
+    type: "stock",
+    tag: "Communication services",
+    price: "Pending",
+    move: 0,
+    why: "Newly added to tracker; price will populate on the next market data refresh."
+  },
+  {
+    ticker: "TMUS",
+    name: "T-Mobile US",
+    type: "stock",
+    tag: "Communication services",
+    price: "Pending",
+    move: 0,
+    why: "Newly added to tracker; price will populate on the next market data refresh."
   }
 ];
 
@@ -667,11 +712,13 @@ const formatPoints = (value) => value === null ? "" : `${value > 0 ? "+" : ""}${
 
 function renderWatchlist(filter = "all") {
   const target = document.querySelector("#watchlist");
-  const filtered = watchlist.filter((item) => {
-    if (filter === "all") return true;
-    if (filter === "alert") return Math.abs(item.move) > 2;
-    return item.type === filter;
-  });
+  const filtered = watchlist
+    .filter((item) => {
+      if (filter === "all") return true;
+      if (filter === "alert") return Math.abs(item.move) > 2;
+      return item.type === filter;
+    })
+    .sort((a, b) => b.move - a.move);
 
   target.innerHTML = filtered.map((item) => {
     const direction = item.move >= 0 ? "up" : "down";
