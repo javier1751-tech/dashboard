@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Operations Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <aside class="sidebar" aria-label="Dashboard navigation">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">D</span>
+        <span>Dashboard</span>
+      </div>
+      <nav>
+        <a href="#overview" class="active">Overview</a>
+        <a href="#revenue">Revenue</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#activity">Activity</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Monthly Review</p>
+          <h1>Operations Dashboard</h1>
+        </div>
+        <div class="actions">
+          <button type="button" id="refreshButton" aria-label="Refresh data">
+            <span aria-hidden="true">↻</span>
+          </button>
+          <button type="button" id="exportButton">Export CSV</button>
+        </div>
+      </header>
+
+      <section id="overview" class="metric-grid" aria-label="Key metrics"></section>
+
+      <section class="content-grid">
+        <article id="revenue" class="panel wide">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Revenue</p>
+              <h2>Monthly Performance</h2>
+            </div>
+            <span class="status positive">On Track</span>
+          </div>
+          <div id="barChart" class="bar-chart" aria-label="Monthly revenue bar chart"></div>
+        </article>
+
+        <article id="pipeline" class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Pipeline</p>
+              <h2>Deal Stages</h2>
+            </div>
+          </div>
+          <div id="pipelineList" class="stage-list"></div>
+        </article>
+
+        <article id="activity" class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Activity</p>
+              <h2>Recent Updates</h2>
+            </div>
+          </div>
+          <div id="activityList" class="activity-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
