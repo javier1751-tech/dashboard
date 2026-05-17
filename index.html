@@ -277,6 +277,48 @@ main {
   color: var(--danger);
 }
 
+.flash-alert {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  vertical-align: 1px;
+  animation: flashPulse 1s ease-in-out infinite;
+}
+
+.flash-alert.up {
+  background: var(--gain);
+}
+
+.flash-alert.down {
+  background: var(--danger);
+}
+
+@keyframes flashPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.38;
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash-alert {
+    animation: none;
+  }
+}
+
 .why {
   margin-top: 12px;
   padding: 10px;
@@ -709,6 +751,13 @@ const candidates = [
 
 const formatMove = (value, suffix = "") => `${value > 0 ? "+" : ""}${value.toFixed(2)}%${suffix ? ` ${suffix}` : ""}`;
 const formatPoints = (value) => value === null ? "" : `${value > 0 ? "+" : ""}${value.toFixed(2)} pts`;
+const alertIcon = (value) => {
+  if (value === null || Math.abs(value) <= 2) return "";
+  const direction = value > 0 ? "up" : "down";
+  const symbol = value > 0 ? "▲" : "▼";
+  const label = value > 0 ? "Up more than 2%" : "Down more than 2%";
+  return `<span class="flash-alert ${direction}" aria-label="${label}" title="${label}">${symbol}</span>`;
+};
 
 function renderWatchlist(filter = "all") {
   const target = document.querySelector("#watchlist");
@@ -732,7 +781,7 @@ function renderWatchlist(filter = "all") {
         <p class="name">${item.name}</p>
         <div class="tag">${item.tag}</div>
         <div class="price">${item.price}</div>
-        <div class="move ${direction}">${formatMove(item.move, item.suffix)}</div>
+        <div class="move ${direction}">${alertIcon(item.move)}${formatMove(item.move, item.suffix)}</div>
         ${alert ? `<div class="why"><strong>Why it moved</strong>${item.why}</div>` : ""}
       </article>
     `;
@@ -755,7 +804,7 @@ function renderIndexes() {
         <strong>${item.name}</strong>
         <div class="index-level">${item.level}</div>
         <div class="move ${unavailable ? "" : direction}">
-          ${unavailable ? "Unavailable" : `${formatPoints(item.points)} ${formatMove(item.move, item.note === "24h" ? "24h" : "")}`}
+          ${unavailable ? "Unavailable" : `${alertIcon(item.move)}${formatPoints(item.points)} ${formatMove(item.move, item.note === "24h" ? "24h" : "")}`}
         </div>
         ${item.note && item.note !== "24h" ? `<p class="subtle">${item.note}</p>` : ""}
       </article>
@@ -775,7 +824,7 @@ function renderMovers(key, elementId) {
           <span>${name}</span>
           <em>${sector}</em>
         </div>
-        <div class="move ${direction}">${formatMove(move)}</div>
+        <div class="move ${direction}">${alertIcon(move)}${formatMove(move)}</div>
       </div>
     `;
   }).join("");
