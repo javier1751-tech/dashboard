@@ -1,75 +1,445 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Operations Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <aside class="sidebar" aria-label="Dashboard navigation">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true">D</span>
-        <span>Dashboard</span>
-      </div>
-      <nav>
-        <a href="#overview" class="active">Overview</a>
-        <a href="#revenue">Revenue</a>
-        <a href="#pipeline">Pipeline</a>
-        <a href="#activity">Activity</a>
-      </nav>
-    </aside>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Market Watch Dashboard</title>
+  <style>
+:root {
+  color-scheme: light;
+  --bg: #f5f7f9;
+  --panel: #ffffff;
+  --text: #17202a;
+  --muted: #667085;
+  --line: #d9e0e7;
+  --gain: #087443;
+  --danger: #b42318;
+  --danger-bg: #fff0ed;
+  --accent: #175cd3;
+  --accent-bg: #eaf1ff;
+  --shadow: 0 12px 30px rgba(16, 24, 40, 0.08);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+}
+h1, h2, p { margin: 0; }
+h1 { margin-top: 4px; font-size: 32px; line-height: 1.1; }
+h2 { font-size: 20px; line-height: 1.2; }
+main { width: min(1180px, 100%); margin: 0 auto; padding: 24px; }
+.eyebrow {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.subtle { margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+.narrow { max-width: 360px; }
+.report-link, .filter {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.filter.active, .report-link:hover, .filter:hover {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.summary-card, .panel, .watch-card, .candidate {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.summary-card { min-height: 92px; border-radius: 8px; padding: 16px; }
+.summary-card span { display: block; color: var(--muted); font-size: 13px; font-weight: 700; }
+.summary-card strong { display: block; margin-top: 10px; font-size: 22px; line-height: 1.1; }
+.summary-card.gain strong { color: var(--gain); }
+.summary-card.danger strong { color: var(--danger); }
+.panel { border-radius: 8px; padding: 18px; margin-bottom: 18px; }
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+.section-head.compact { align-items: center; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.watchlist { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.index-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.index-card { border-top: 1px solid var(--line); padding: 12px 0; }
+.index-card strong { display: block; font-size: 14px; }
+.index-level { margin-top: 8px; font-size: 21px; font-weight: 850; }
+.index-card .move { font-size: 14px; }
+.watch-card { min-height: 176px; border-radius: 8px; padding: 14px; }
+.watch-card header { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.ticker { font-size: 20px; font-weight: 850; }
+.type {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #eef2f6;
+  color: #344054;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.name { min-height: 34px; margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.3; }
+.price { margin-top: 14px; font-size: 24px; font-weight: 850; }
+.move { margin-top: 4px; font-size: 16px; font-weight: 850; }
+.move.up { color: var(--gain); }
+.move.down { color: var(--danger); }
+.why {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--danger-bg);
+  color: #7a271a;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.why strong { display: block; margin-bottom: 3px; }
+.split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.pill {
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 6px 9px;
+  background: #eef2f6;
+  color: #344054;
+  font-size: 12px;
+  font-weight: 800;
+}
+.mover-list { display: grid; gap: 8px; }
+.mover {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+}
+.mover:first-child { border-top: 0; }
+.rank { color: var(--muted); font-weight: 850; }
+.mover-name strong, .candidate strong { display: block; }
+.mover-name span {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.candidate-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.candidate { border-radius: 8px; padding: 14px; }
+.candidate p { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.4; }
+@media (max-width: 980px) {
+  .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .watchlist, .index-grid, .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .topbar { display: block; padding: 20px; }
+  .report-link { display: inline-flex; align-items: center; margin-top: 14px; }
+  main { padding: 14px; }
+  h1 { font-size: 27px; }
+  .section-head, .split { display: block; }
+  .controls { justify-content: flex-start; margin-top: 12px; }
+  .summary-grid, .watchlist, .index-grid, .candidate-grid { grid-template-columns: 1fr; }
+  .summary-card, .watch-card { min-height: auto; }
+  .mover { grid-template-columns: 34px minmax(0, 1fr) auto; }
+}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Stock Market Workspace</p>
+      <h1>Market Watch Dashboard</h1>
+      <p class="subtle">Latest saved report: May 17, 2026. U.S. prices use the May 15 close; crypto uses latest 24h data from that report.</p>
+    </div>
+    <span class="report-link">Mobile copy</span>
+  </header>
 
-    <main>
-      <header class="topbar">
+  <main>
+    <section class="summary-grid" aria-label="Market summary">
+      <article class="summary-card danger"><span>S&P 500</span><strong>-1.20%</strong></article>
+      <article class="summary-card danger"><span>Nasdaq 100</span><strong>-1.51%</strong></article>
+      <article class="summary-card danger"><span>Russell 2000</span><strong>-2.41%</strong></article>
+      <article class="summary-card gain"><span>Best Watchlist</span><strong>ETH +0.46%</strong></article>
+      <article class="summary-card danger"><span>Worst Watchlist</span><strong>F -7.46%</strong></article>
+      <article class="summary-card neutral"><span>Move Alerts</span><strong>2 names</strong></article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head compact">
         <div>
-          <p class="eyebrow">Monthly Review</p>
-          <h1>Operations Dashboard</h1>
+          <p class="eyebrow">Current Levels</p>
+          <h2>Major Indexes</h2>
         </div>
-        <div class="actions">
-          <button type="button" id="refreshButton" aria-label="Refresh data">
-            <span aria-hidden="true">↻</span>
-          </button>
-          <button type="button" id="exportButton">Export CSV</button>
+        <span class="pill">Latest close</span>
+      </div>
+      <div class="index-grid" id="indexes"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Your List</p>
+          <h2>Watchlist</h2>
         </div>
-      </header>
+        <div class="controls" role="group" aria-label="Watchlist filter">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="alert">Over 2%</button>
+          <button class="filter" data-filter="etf">ETFs</button>
+          <button class="filter" data-filter="stock">Stocks</button>
+          <button class="filter" data-filter="crypto">Crypto</button>
+        </div>
+      </div>
+      <div class="watchlist" id="watchlist"></div>
+    </section>
 
-      <section id="overview" class="metric-grid" aria-label="Key metrics"></section>
+    <section class="split">
+      <article class="panel">
+        <div class="section-head compact">
+          <div><p class="eyebrow">Entire Market</p><h2>Top ETF Movers</h2></div>
+          <span class="pill">Leveraged heavy</span>
+        </div>
+        <div class="mover-list" id="topEtfs"></div>
+      </article>
+      <article class="panel">
+        <div class="section-head compact">
+          <div><p class="eyebrow">Entire Market</p><h2>Bottom ETF Movers</h2></div>
+          <span class="pill">Leveraged heavy</span>
+        </div>
+        <div class="mover-list" id="bottomEtfs"></div>
+      </article>
+    </section>
 
-      <section class="content-grid">
-        <article id="revenue" class="panel wide">
-          <div class="panel-header">
-            <div>
-              <p class="eyebrow">Revenue</p>
-              <h2>Monthly Performance</h2>
-            </div>
-            <span class="status positive">On Track</span>
-          </div>
-          <div id="barChart" class="bar-chart" aria-label="Monthly revenue bar chart"></div>
-        </article>
+    <section class="split">
+      <article class="panel">
+        <div class="section-head compact">
+          <div><p class="eyebrow">Entire Market</p><h2>Top Stock Movers</h2></div>
+          <span class="pill">Volatile names</span>
+        </div>
+        <div class="mover-list" id="topStocks"></div>
+      </article>
+      <article class="panel">
+        <div class="section-head compact">
+          <div><p class="eyebrow">Entire Market</p><h2>Bottom Stock Movers</h2></div>
+          <span class="pill">Volatile names</span>
+        </div>
+        <div class="mover-list" id="bottomStocks"></div>
+      </article>
+    </section>
 
-        <article id="pipeline" class="panel">
-          <div class="panel-header">
-            <div>
-              <p class="eyebrow">Pipeline</p>
-              <h2>Deal Stages</h2>
-            </div>
-          </div>
-          <div id="pipelineList" class="stage-list"></div>
-        </article>
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Research Ideas</p>
+          <h2>Value Candidates</h2>
+        </div>
+        <p class="subtle narrow">Research candidates only, not personalized financial advice.</p>
+      </div>
+      <div class="candidate-grid" id="candidates"></div>
+    </section>
+  </main>
 
-        <article id="activity" class="panel">
-          <div class="panel-header">
-            <div>
-              <p class="eyebrow">Activity</p>
-              <h2>Recent Updates</h2>
-            </div>
-          </div>
-          <div id="activityList" class="activity-list"></div>
-        </article>
-      </section>
-    </main>
+  <script>
+const watchlist = [
+  { ticker: "VOO", name: "Vanguard S&P 500 ETF", type: "etf", price: "$679.44", move: -1.21 },
+  { ticker: "VGT", name: "Vanguard Information Technology ETF", type: "etf", price: "$113.31", move: -1.63 },
+  { ticker: "BTC", name: "Bitcoin", type: "crypto", price: "$78,095.00", move: -0.19, suffix: "24h" },
+  { ticker: "ETH", name: "Ethereum", type: "crypto", price: "$2,185.38", move: 0.46, suffix: "24h" },
+  { ticker: "SCHD", name: "Schwab U.S. Dividend Equity ETF", type: "etf", price: "$31.72", move: -0.25 },
+  { ticker: "JEPI", name: "JPMorgan Equity Premium Income ETF", type: "etf", price: "$55.89", move: -0.18 },
+  { ticker: "QQQ", name: "Invesco QQQ Trust", type: "etf", price: "$708.93", move: -1.51 },
+  { ticker: "BRK.B", name: "Berkshire Hathaway Class B", type: "stock", price: "$482.70", move: -0.28 },
+  {
+    ticker: "MDLN",
+    name: "Medline Inc",
+    type: "stock",
+    price: "$36.19",
+    move: -6.97,
+    why: "No clear single catalyst found in the saved report. Flagged for verification; weakness likely tied to sharp stock-specific selling and high volume."
+  },
+  {
+    ticker: "F",
+    name: "Ford Motor Company",
+    type: "stock",
+    price: "$13.40",
+    move: -7.46,
+    why: "No clear single catalyst found in the saved report. Likely context: broad risk-off session, cyclical auto pressure, and heavy volume."
+  }
+];
 
-    <script src="script.js"></script>
-  </body>
+const indexes = [
+  { name: "S&P 500", level: "7,408.50", points: -92.74, move: -1.24 },
+  { name: "Nasdaq Composite", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
+  { name: "Nasdaq 100", level: "29,125.20", points: -455.10, move: -1.54 },
+  { name: "Dow Jones", level: "49,526.17", points: -537.29, move: -1.07 },
+  { name: "Russell 2000", level: "277.60", points: -6.85, move: -2.41, note: "IWM ETF proxy" },
+  { name: "S&P MidCap 400", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
+  { name: "S&P SmallCap 600", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
+  { name: "VIX", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
+  { name: "10Y Treasury", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
+  { name: "Oil", level: "$148.23", points: 5.23, move: 3.66, note: "USO ETF proxy" },
+  { name: "Gold", level: "$417.29", points: -9.92, move: -2.32, note: "GLD ETF proxy" },
+  { name: "Bitcoin", level: "$77,914.00", points: null, move: -0.42, note: "24h" },
+  { name: "Ethereum", level: "$2,178.46", points: null, move: 0.06, note: "24h" }
+];
+
+const movers = {
+  topEtfs: [
+    ["FIGG", "2x Long FIG Daily ETF", 25.74],
+    ["GDXD", "-3x Gold Miners ETN", 21.61],
+    ["IONZ", "2x Short IONQ ETF", 18.88],
+    ["ZSL", "UltraShort Silver", 17.36],
+    ["QBTZ", "2x Short QBTS ETF", 16.09]
+  ],
+  bottomEtfs: [
+    ["GDXU", "3x Gold Miners ETN", -21.13],
+    ["IONX", "2x Long IONQ ETF", -19.18],
+    ["IONL", "2x Long IONQ ETF", -19.13],
+    ["BMNG", "2x Long BMNR ETF", -19.07],
+    ["TXXS", "2x Long Sui ETF", -19.05]
+  ],
+  topStocks: [
+    ["HCWB", "HCW Biologics", 262.02],
+    ["PIII", "P3 Health Partners", 180.15],
+    ["MRNO", "Murano Global Investments", 94.24],
+    ["AUUD", "Auddia", 60.66],
+    ["SLE", "Super League Enterprise", 48.40]
+  ],
+  bottomStocks: [
+    ["ELPW", "Elong Power Holding", -51.03],
+    ["WOK", "WORK Medical Technology", -49.23],
+    ["LNZA", "LanzaTech Global", -43.27],
+    ["SLXN", "Silexion Therapeutics", -42.06],
+    ["GAMB", "Gambling.com Group", -42.03]
+  ]
+};
+
+const candidates = [
+  ["SCHD", "ETF", "Dividend-quality ETF; useful for income and quality at low cost. Risk: can lag growth-led markets."],
+  ["VTV", "ETF", "Broad U.S. value exposure. Risk: value can stay out of favor for long stretches."],
+  ["VIGI", "ETF", "International dividend growth exposure. Risk: currency and non-U.S. equity risk."],
+  ["BRK.B", "Stock", "Diversified, cash-rich quality compounder. Risk: valuation and succession."],
+  ["F", "Stock", "Beaten-down cyclical value setup. Risk: autos are cyclical and execution-sensitive."],
+  ["PFE", "Stock", "Defensive healthcare value/turnaround candidate. Risk: pipeline and patent-cliff execution."]
+];
+
+const formatMove = (value, suffix = "") => `${value > 0 ? "+" : ""}${value.toFixed(2)}%${suffix ? ` ${suffix}` : ""}`;
+const formatPoints = (value) => value === null ? "" : `${value > 0 ? "+" : ""}${value.toFixed(2)} pts`;
+
+function renderWatchlist(filter = "all") {
+  const target = document.querySelector("#watchlist");
+  const filtered = watchlist.filter((item) => {
+    if (filter === "all") return true;
+    if (filter === "alert") return Math.abs(item.move) > 2;
+    return item.type === filter;
+  });
+
+  target.innerHTML = filtered.map((item) => {
+    const direction = item.move >= 0 ? "up" : "down";
+    const alert = Math.abs(item.move) > 2;
+    return `
+      <article class="watch-card" data-type="${item.type}">
+        <header>
+          <div class="ticker">${item.ticker}</div>
+          <div class="type">${item.type}</div>
+        </header>
+        <p class="name">${item.name}</p>
+        <div class="price">${item.price}</div>
+        <div class="move ${direction}">${formatMove(item.move, item.suffix)}</div>
+        ${alert ? `<div class="why"><strong>Why it moved</strong>${item.why}</div>` : ""}
+      </article>
+    `;
+  }).join("");
+}
+
+function renderIndexes() {
+  document.querySelector("#indexes").innerHTML = indexes.map((item) => {
+    const unavailable = item.move === null;
+    const direction = !unavailable && item.move >= 0 ? "up" : "down";
+    return `
+      <article class="index-card">
+        <strong>${item.name}</strong>
+        <div class="index-level">${item.level}</div>
+        <div class="move ${unavailable ? "" : direction}">
+          ${unavailable ? "Unavailable" : `${formatPoints(item.points)} ${formatMove(item.move, item.note === "24h" ? "24h" : "")}`}
+        </div>
+        ${item.note && item.note !== "24h" ? `<p class="subtle">${item.note}</p>` : ""}
+      </article>
+    `;
+  }).join("");
+}
+
+function renderMovers(key, elementId) {
+  document.querySelector(`#${elementId}`).innerHTML = movers[key].map((item, index) => {
+    const [ticker, name, move] = item;
+    const direction = move >= 0 ? "up" : "down";
+    return `
+      <div class="mover">
+        <div class="rank">${index + 1}</div>
+        <div class="mover-name">
+          <strong>${ticker}</strong>
+          <span>${name}</span>
+        </div>
+        <div class="move ${direction}">${formatMove(move)}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderCandidates() {
+  document.querySelector("#candidates").innerHTML = candidates.map(([ticker, type, note]) => `
+    <article class="candidate">
+      <strong>${ticker} <span class="type">${type}</span></strong>
+      <p>${note}</p>
+    </article>
+  `).join("");
+}
+
+document.querySelectorAll(".filter").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".filter").forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    renderWatchlist(button.dataset.filter);
+  });
+});
+
+renderWatchlist();
+renderIndexes();
+renderMovers("topEtfs", "topEtfs");
+renderMovers("bottomEtfs", "bottomEtfs");
+renderMovers("topStocks", "topStocks");
+renderMovers("bottomStocks", "bottomStocks");
+renderCandidates();
+  </script>
+</body>
 </html>
