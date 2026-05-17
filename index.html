@@ -242,6 +242,21 @@ main {
   line-height: 1.3;
 }
 
+.tag {
+  display: inline-block;
+  max-width: 100%;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #eef2f6;
+  color: #344054;
+  font-size: 12px;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .price {
   margin-top: 14px;
   font-size: 24px;
@@ -554,18 +569,19 @@ main {
 
   <script>
 const watchlist = [
-  { ticker: "VOO", name: "Vanguard S&P 500 ETF", type: "etf", price: "$679.44", move: -1.21 },
-  { ticker: "VGT", name: "Vanguard Information Technology ETF", type: "etf", price: "$113.31", move: -1.63 },
-  { ticker: "BTC", name: "Bitcoin", type: "crypto", price: "$78,095.00", move: -0.19, suffix: "24h" },
-  { ticker: "ETH", name: "Ethereum", type: "crypto", price: "$2,185.38", move: 0.46, suffix: "24h" },
-  { ticker: "SCHD", name: "Schwab U.S. Dividend Equity ETF", type: "etf", price: "$31.72", move: -0.25 },
-  { ticker: "JEPI", name: "JPMorgan Equity Premium Income ETF", type: "etf", price: "$55.89", move: -0.18 },
-  { ticker: "QQQ", name: "Invesco QQQ Trust", type: "etf", price: "$708.93", move: -1.51 },
-  { ticker: "BRK.B", name: "Berkshire Hathaway Class B", type: "stock", price: "$482.70", move: -0.28 },
+  { ticker: "VOO", name: "Vanguard S&P 500 ETF", type: "etf", tag: "Broad market", price: "$679.44", move: -1.21 },
+  { ticker: "VGT", name: "Vanguard Information Technology ETF", type: "etf", tag: "Technology", price: "$113.31", move: -1.63 },
+  { ticker: "BTC", name: "Bitcoin", type: "crypto", tag: "Crypto", price: "$78,095.00", move: -0.19, suffix: "24h" },
+  { ticker: "ETH", name: "Ethereum", type: "crypto", tag: "Crypto", price: "$2,185.38", move: 0.46, suffix: "24h" },
+  { ticker: "SCHD", name: "Schwab U.S. Dividend Equity ETF", type: "etf", tag: "Dividend value", price: "$31.72", move: -0.25 },
+  { ticker: "JEPI", name: "JPMorgan Equity Premium Income ETF", type: "etf", tag: "Equity income", price: "$55.89", move: -0.18 },
+  { ticker: "QQQ", name: "Invesco QQQ Trust", type: "etf", tag: "Large-cap growth", price: "$708.93", move: -1.51 },
+  { ticker: "BRK.B", name: "Berkshire Hathaway Class B", type: "stock", tag: "Financials", price: "$482.70", move: -0.28 },
   {
     ticker: "MDLN",
     name: "Medline Inc",
     type: "stock",
+    tag: "Healthcare",
     price: "$36.19",
     move: -6.97,
     why: "No clear single catalyst found in the saved report. Flagged for verification; weakness likely tied to sharp stock-specific selling and high volume."
@@ -574,9 +590,19 @@ const watchlist = [
     ticker: "F",
     name: "Ford Motor Company",
     type: "stock",
+    tag: "Consumer cyclical",
     price: "$13.40",
     move: -7.46,
     why: "No clear single catalyst found in the saved report. Likely context: broad risk-off session, cyclical auto pressure, and heavy volume."
+  },
+  {
+    ticker: "VZ",
+    name: "Verizon Communications",
+    type: "stock",
+    tag: "Communication services",
+    price: "Pending",
+    move: 0,
+    why: "Newly added to tracker; price will populate on the next market data refresh."
   }
 ];
 
@@ -628,12 +654,12 @@ const movers = {
 };
 
 const candidates = [
-  ["SCHD", "ETF", "Dividend-quality ETF; useful for income and quality at low cost. Risk: can lag growth-led markets."],
-  ["VTV", "ETF", "Broad U.S. value exposure. Risk: value can stay out of favor for long stretches."],
-  ["VIGI", "ETF", "International dividend growth exposure. Risk: currency and non-U.S. equity risk."],
-  ["BRK.B", "Stock", "Diversified, cash-rich quality compounder. Risk: valuation and succession."],
-  ["F", "Stock", "Beaten-down cyclical value setup. Risk: autos are cyclical and execution-sensitive."],
-  ["PFE", "Stock", "Defensive healthcare value/turnaround candidate. Risk: pipeline and patent-cliff execution."]
+  ["SCHD", "ETF", "Dividend value", "Dividend-quality ETF; useful for income and quality at low cost. Risk: can lag growth-led markets."],
+  ["VTV", "ETF", "U.S. value", "Broad U.S. value exposure. Risk: value can stay out of favor for long stretches."],
+  ["VIGI", "ETF", "International dividends", "International dividend growth exposure. Risk: currency and non-U.S. equity risk."],
+  ["BRK.B", "Stock", "Financials", "Diversified, cash-rich quality compounder. Risk: valuation and succession."],
+  ["F", "Stock", "Consumer cyclical", "Beaten-down cyclical value setup. Risk: autos are cyclical and execution-sensitive."],
+  ["PFE", "Stock", "Healthcare", "Defensive healthcare value/turnaround candidate. Risk: pipeline and patent-cliff execution."]
 ];
 
 const formatMove = (value, suffix = "") => `${value > 0 ? "+" : ""}${value.toFixed(2)}%${suffix ? ` ${suffix}` : ""}`;
@@ -657,6 +683,7 @@ function renderWatchlist(filter = "all") {
           <div class="type">${item.type}</div>
         </header>
         <p class="name">${item.name}</p>
+        <div class="tag">${item.tag}</div>
         <div class="price">${item.price}</div>
         <div class="move ${direction}">${formatMove(item.move, item.suffix)}</div>
         ${alert ? `<div class="why"><strong>Why it moved</strong>${item.why}</div>` : ""}
@@ -701,9 +728,10 @@ function renderMovers(key, elementId) {
 }
 
 function renderCandidates() {
-  document.querySelector("#candidates").innerHTML = candidates.map(([ticker, type, note]) => `
+  document.querySelector("#candidates").innerHTML = candidates.map(([ticker, type, tag, note]) => `
     <article class="candidate">
       <strong>${ticker} <span class="type">${type}</span></strong>
+      <div class="tag">${tag}</div>
       <p>${note}</p>
     </article>
   `).join("");
