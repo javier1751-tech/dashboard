@@ -740,7 +740,14 @@ function renderWatchlist(filter = "all") {
 }
 
 function renderIndexes() {
-  document.querySelector("#indexes").innerHTML = indexes.map((item) => {
+  const sortedIndexes = [...indexes].sort((a, b) => {
+    if (a.move === null && b.move === null) return 0;
+    if (a.move === null) return 1;
+    if (b.move === null) return -1;
+    return b.move - a.move;
+  });
+
+  document.querySelector("#indexes").innerHTML = sortedIndexes.map((item) => {
     const unavailable = item.move === null;
     const direction = !unavailable && item.move >= 0 ? "up" : "down";
     return `
