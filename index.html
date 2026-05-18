@@ -151,70 +151,70 @@
   </main>
 
   <script>
-    const UPDATED_AT = "2026-05-18 09:05 CDT";
+    const UPDATED_AT = "May 18, 2026 03:16 PM CDT";
 
     const DATA = {
       indexes: [
-        { key: "SP500", label: "S&P 500", price: 7407.80, chg: null, pct: -0.01, tags: ["Index","US Large Cap"], source: "WeeklyTrader.io (indices snapshot)" },
-        { key: "NASDAQ", label: "Nasdaq Composite", price: 29156.98, chg: null, pct: 0.11, tags: ["Index","US Composite"], source: "WeeklyTrader.io (indices snapshot)" },
-        { key: "NASDAQ100", label: "Nasdaq 100 (QQQ proxy)", price: 709.40, chg: null, pct: 0.07, tags: ["Index Proxy","US Tech-heavy"], source: "Barchart (QQQ quote)" },
-        { key: "DOW", label: "Dow Jones Industrial Average", price: 49507.60, chg: null, pct: -0.04, tags: ["Index","US Blue Chips"], source: "WeeklyTrader.io (indices snapshot)" },
-        { key: "RUT", label: "Russell 2000 (IWM proxy)", price: 276.45, chg: null, pct: -0.41, tags: ["Index Proxy","US Small Cap"], source: "Barchart (IWM quote)" },
+        { key: "SP500", label: "S&P 500", price: 7380.23, chg: null, pct: -0.08, tags: ["Index","US Large Cap"], source: "StockAnalysis (Stock Indexes header) / Barchart snapshot for level" },
+        { key: "NASDAQ", label: "Nasdaq Composite", price: 26070.38, chg: null, pct: -0.59, tags: ["Index","US Composite"], source: "MarketScreener quote snapshot" },
+        { key: "NASDAQ100", label: "Nasdaq 100", price: 28828.83, chg: null, pct: -0.45, tags: ["Index","US Tech-heavy"], source: "StockAnalysis (Stock Indexes header) / Barchart snapshot for level" },
+        { key: "DOW", label: "Dow Jones Industrial Average", price: 49556.39, chg: null, pct: 0.33, tags: ["Index","US Blue Chips"], source: "StockAnalysis (Stock Indexes header) / Barchart snapshot for level" },
+        { key: "RUT", label: "Russell 2000 (IWM proxy)", price: 276.45, chg: null, pct: -0.58, tags: ["Index Proxy","US Small Cap"], source: "StockAnalysis (Stock Indexes header) / Barchart snapshot for proxy level" },
         { key: "MID", label: "S&P MidCap 400", price: 3670.18, chg: null, pct: 0.44, tags: ["Index","US Mid Cap"], source: "Barchart ($IDX quote)" },
         { key: "SML", label: "S&P SmallCap 600", price: 1629.28, chg: null, pct: -1.62, tags: ["Index","US Small Cap"], source: "Barchart ($IQY quote)" },
         { key: "VIX", label: "VIX", price: 18.79, chg: null, pct: 1.95, tags: ["Volatility"], source: "Barchart ($VIX quote)" },
         { key: "US10Y", label: "10-Year Treasury Yield", price: 4.59, chg: null, pct: null, tags: ["Rates","Macro"], source: "Slickcharts (as of close 2026-05-15)" },
         { key: "WTI", label: "WTI Crude Oil (CL front)", price: 105.42, chg: null, pct: 4.20, tags: ["Commodities","Energy"], source: "Barchart (CLM26)" },
         { key: "GOLD", label: "Gold (GC front)", price: 4573.30, chg: null, pct: 0.25, tags: ["Commodities","Precious Metals"], source: "Barchart (GCM26)" },
-        { key: "BTC", label: "Bitcoin (BTC/USD)", price: 76952.01, chg: null, pct: -2.70, tags: ["Crypto"], source: "Barchart (^BTCUSD quote)" },
-        { key: "ETH", label: "Ethereum (ETH/USD)", price: 2141.760, chg: null, pct: -3.49, tags: ["Crypto"], source: "Barchart (^ETHUSD quote)" }
+        { key: "BTC", label: "Bitcoin (BTC/USD)", price: 77347.59, chg: null, pct: -0.80, tags: ["Crypto"], source: "Fortune (9:30am ET snapshot)" },
+        { key: "ETH", label: "Ethereum (ETH/USD)", price: 2144.92, chg: null, pct: null, tags: ["Crypto"], source: "Fortune (9:30am ET snapshot)" }
       ],
       watchlist: [
-        { ticker: "MDLN", name: "MDLN (verify)", price: 36.87, chg: null, pct: 1.88, tags: ["Stock","Unclassified"], why: null },
-        { ticker: "VOO", name: "Vanguard S&P 500 ETF", price: 680.33, chg: null, pct: 0.13, tags: ["ETF","Broad Market","S&P 500"], why: null },
-        { ticker: "QQQ", name: "Invesco QQQ Trust", price: 709.40, chg: null, pct: 0.07, tags: ["ETF","Nasdaq 100","Technology-heavy"], why: null },
-        { ticker: "SCHD", name: "Schwab U.S. Dividend Equity ETF", price: 31.70, chg: null, pct: -0.06, tags: ["ETF","Dividend Equity","Broad U.S."], why: null },
-        { ticker: "CSCO", name: "Cisco Systems", price: 118.10, chg: null, pct: -0.09, tags: ["Stock","Technology","Networking"], why: null },
-        { ticker: "JEPI", name: "JPMorgan Equity Premium Income ETF", price: 55.82, chg: null, pct: -0.13, tags: ["ETF","Equity Income","Covered Calls"], why: null },
-        { ticker: "VGT", name: "Vanguard Information Technology ETF", price: 112.97, chg: null, pct: -0.30, tags: ["ETF","Technology","U.S. Equity"], why: null },
-        { ticker: "BRK.B", name: "Berkshire Hathaway Class B", price: 482.70, chg: null, pct: -0.28, tags: ["Stock","Financials","Conglomerate"], why: null },
-        { ticker: "FJTSY", name: "Fujitsu Ltd ADR", price: 20.44, chg: null, pct: -1.30, tags: ["Stock","Technology","Japan ADR"], why: null },
-        { ticker: "VZ", name: "Verizon Communications", price: 46.37, chg: null, pct: -1.47, tags: ["Stock","Communication Services","Telecom"], why: null },
-        { ticker: "TMUS", name: "T-Mobile US", price: 185.22, chg: null, pct: -1.58, tags: ["Stock","Communication Services","Wireless"], why: null },
-        { ticker: "ETH", name: "Ethereum", price: 2141.760, chg: null, pct: -3.49, tags: ["Crypto","Layer 1"], why: "Macro-driven risk-off + weak sentiment (crypto selloff). <a href=\"https://www.fxstreet.com/cryptocurrencies/news/crypto-today-bitcoin-ethereum-xrp-extend-decline-as-weak-sentiment-etf-outflows-weigh-202605181200\" target=\"_blank\" rel=\"noreferrer\">Source</a>." },
-        { ticker: "BTC", name: "Bitcoin", price: 76952.01, chg: null, pct: -2.70, tags: ["Crypto","Store of Value"], why: "Risk-off move + liquidation/outflow narrative in crypto markets. <a href=\"https://www.fxstreet.com/cryptocurrencies/news/crypto-today-bitcoin-ethereum-xrp-extend-decline-as-weak-sentiment-etf-outflows-weigh-202605181200\" target=\"_blank\" rel=\"noreferrer\">Source</a>." },
-        { ticker: "T", name: "AT&T", price: 24.03, chg: null, pct: -2.52, tags: ["Stock","Communication Services","Telecom"], why: "No clear catalyst found; likely rotation/rate-sensitivity. Check session headlines for a specific trigger." },
-        { ticker: "CIEN", name: "Ciena Corporation", price: 527.39, chg: null, pct: -4.88, tags: ["Stock","Technology","Networking"], why: "No clear catalyst found; likely tech/networking risk-off and/or company-specific headline flow." },
-        { ticker: "F", name: "Ford Motor Company", price: 13.40, chg: null, pct: -7.46, tags: ["Stock","Consumer Discretionary","Automotive"], why: "No clear catalyst found; likely cyclicals risk-off or a headline/analyst action." }
+        { ticker: "T", name: "AT&T", price: 24.46, chg: null, pct: 1.77, tags: ["Stock","Communication Services","Telecom"], why: null },
+        { ticker: "TMUS", name: "T-Mobile US", price: 190.27, chg: null, pct: 2.73, tags: ["Stock","Communication Services","Wireless"], why: "No clear catalyst found. Likely context: telecom/defensive rotation and stock-specific flows near the close. Source: StockAnalysis quote snapshot (May 18, 2026)." },
+        { ticker: "BRK.B", name: "Berkshire Hathaway Class B", price: 488.19, chg: null, pct: 1.14, tags: ["Stock","Financials","Conglomerate"], why: null },
+        { ticker: "VZ", name: "Verizon Communications", price: 46.87, chg: null, pct: 1.08, tags: ["Stock","Communication Services","Telecom"], why: null },
+        { ticker: "SCHD", name: "Schwab U.S. Dividend Equity ETF", price: 32.00, chg: null, pct: 0.87, tags: ["ETF","Dividend Equity","Quality Dividend"], why: null },
+        { ticker: "CSCO", name: "Cisco Systems", price: 118.84, chg: null, pct: 0.53, tags: ["Stock","Technology","Networking"], why: null },
+        { ticker: "JEPI", name: "JPMorgan Equity Premium Income ETF", price: 56.14, chg: null, pct: 0.45, tags: ["ETF","Equity Income","Covered Calls"], why: null },
+        { ticker: "BTC", name: "Bitcoin", price: 77347.59, chg: null, pct: -0.80, tags: ["Crypto","Bitcoin"], why: null },
+        { ticker: "MDLN", name: "Medline", price: 36.03, chg: null, pct: -0.44, tags: ["Stock","Health Care","Medical Supplies"], why: null },
+        { ticker: "QQQ", name: "Invesco QQQ Trust", price: 705.75, chg: null, pct: -0.45, tags: ["ETF","Nasdaq 100","Technology-heavy"], why: null },
+        { ticker: "VOO", name: "Vanguard S&P 500 ETF", price: 678.85, chg: null, pct: -0.09, tags: ["ETF","Broad Market","S&P 500"], why: null },
+        { ticker: "VGT", name: "Vanguard Information Technology ETF", price: 112.11, chg: null, pct: -1.06, tags: ["ETF","Technology","U.S. Equity"], why: null },
+        { ticker: "ETH", name: "Ethereum", price: 2144.92, chg: null, pct: null, tags: ["Crypto","Ethereum","Layer 1"], why: null },
+        { ticker: "F", name: "Ford Motor Company", price: 13.10, chg: null, pct: -2.28, tags: ["Stock","Consumer Discretionary","Automotive"], why: "No clear catalyst found. Likely context: cyclical/auto weakness and broad risk-off pockets into the close. Source: StockAnalysis quote snapshot (May 18, 2026)." },
+        { ticker: "CIEN", name: "Ciena Corporation", price: 522.14, chg: null, pct: -5.83, tags: ["Stock","Technology","Networking"], why: "No clear catalyst found. Likely context: networking/optical volatility and broader tech pressure. Source: StockAnalysis quote snapshot (May 18, 2026)." },
+        { ticker: "FJTSY", name: "Fujitsu Ltd ADR", price: null, chg: null, pct: null, tags: ["Stock","Technology","Japan ADR"], why: null }
       ],
       movers: {
         stocksTop: [
-          { ticker:"OXY", name:"Occidental Petroleum", sector:"Energy", industry:"Energy", pct:4.89 },
-          { ticker:"SNOW", name:"Snowflake Inc.", sector:"Technology", industry:"Technology", pct:4.45 },
-          { ticker:"CRM", name:"Salesforce Inc.", sector:"Technology", industry:"Technology", pct:3.54 },
-          { ticker:"XOM", name:"Exxon Mobil", sector:"Energy", industry:"Energy", pct:3.36 },
-          { ticker:"MSFT", name:"Microsoft Corporation", sector:"Technology", industry:"Technology", pct:3.05 }
+          { ticker:"WGRX", name:"Wellgistics Health, Inc.", sector:"Unclassified", industry:"Unclassified", pct:99.40 },
+          { ticker:"HCAI", name:"Huachen AI Parking Management Technology Holding Co., Ltd", sector:"Unclassified", industry:"Unclassified", pct:96.57 },
+          { ticker:"GOVX", name:"GeoVax Labs, Inc.", sector:"Unclassified", industry:"Unclassified", pct:78.05 },
+          { ticker:"SBFM", name:"Sunshine Biopharma, Inc.", sector:"Unclassified", industry:"Unclassified", pct:76.80 },
+          { ticker:"VRAX", name:"Virax Biolabs Group Limited", sector:"Unclassified", industry:"Unclassified", pct:61.89 }
         ],
         stocksBottom: [
-          { ticker:"COIN", name:"Coinbase Global", sector:"Financial Services", industry:"Financial Services", pct:-7.82 },
-          { ticker:"F", name:"Ford Motor", sector:"Consumer Discretionary", industry:"Consumer Discretionary", pct:-7.46 },
-          { ticker:"INTC", name:"Intel Corporation", sector:"Technology", industry:"Technology", pct:-6.18 },
-          { ticker:"AMD", name:"Advanced Micro Devices", sector:"Technology", industry:"Technology", pct:-5.69 },
-          { ticker:"RIVN", name:"Rivian Automotive", sector:"Consumer Discretionary", industry:"Consumer Discretionary", pct:-5.03 }
+          { ticker:"BTM", name:"Bitcoin Depot Inc.", sector:"Unclassified", industry:"Unclassified", pct:-73.38 },
+          { ticker:"LICN", name:"Lichen International Limited", sector:"Unclassified", industry:"Unclassified", pct:-45.76 },
+          { ticker:"WOK", name:"WORK Medical Technology Group LTD", sector:"Unclassified", industry:"Unclassified", pct:-44.59 },
+          { ticker:"GOSS", name:"Gossamer Bio, Inc.", sector:"Unclassified", industry:"Unclassified", pct:-42.00 },
+          { ticker:"YOOV", name:"Concorde International Group Ltd.", sector:"Unclassified", industry:"Unclassified", pct:-37.07 }
         ],
         etfsTop: [
-          { ticker:"SOXS", name:"Direxion Daily Semiconductor Bear 3x Shares", exposure:"Semiconductors (Inverse/Leveraged)", pct:11.61 },
-          { ticker:"SQQQ", name:"ProShares UltraPro Short QQQ", exposure:"Nasdaq 100 (Inverse/Leveraged)", pct:4.65 },
-          { ticker:"SNXX", name:"Tradr 2X Long SNDK Daily ETF", exposure:"Leveraged Single Stock", pct:3.68 },
-          { ticker:"USO", name:"United States Oil Fund LP", exposure:"WTI Crude Oil", pct:3.66 },
-          { ticker:"XOP", name:"SPDR S&P Oil & Gas E&P ETF", exposure:"Energy (E&P)", pct:2.90 }
+          { ticker:"FIGG", name:"Leverage Shares 2x Long FIG Daily ETF", exposure:"Leveraged Single Stock", pct:25.74 },
+          { ticker:"GDXD", name:"MicroSectors Gold Miners -3X Inverse Leveraged ETNs", exposure:"Gold Miners (Inverse/Leveraged)", pct:21.61 },
+          { ticker:"IONZ", name:"Defiance Daily Target 2x Short IONQ ETF", exposure:"Inverse Single Stock", pct:18.88 },
+          { ticker:"ZSL", name:"ProShares UltraShort Silver", exposure:"Silver (Inverse/Leveraged)", pct:17.36 },
+          { ticker:"QBTZ", name:"Defiance Daily Target 2x Short QBTS ETF", exposure:"Inverse Single Stock", pct:16.09 }
         ],
         etfsBottom: [
-          { ticker:"GDXU", name:"MicroSectors Gold Miners 3X Leveraged ETN", exposure:"Gold Miners (Leveraged)", pct:-21.13 },
-          { ticker:"KORU", name:"Direxion MSCI Daily South Korea Bull 3X Shares", exposure:"International Equity (Leveraged)", pct:-18.32 },
-          { ticker:"AGQ", name:"ProShares Ultra Silver", exposure:"Silver (Leveraged)", pct:-17.62 },
-          { ticker:"MUU", name:"Direxion Daily MU Bull 2X Shares", exposure:"Leveraged Single Stock", pct:-13.08 },
-          { ticker:"SOXL", name:"Direxion Daily Semiconductor Bull 3x Shares", exposure:"Semiconductors (Leveraged)", pct:-11.82 }
+          { ticker:"PPLT", name:"abrdn Physical Platinum Shares ETF", exposure:"Platinum (Commodities)", pct:-90.03 },
+          { ticker:"PALL", name:"abrdn Physical Palladium Shares ETF", exposure:"Palladium (Commodities)", pct:-80.14 },
+          { ticker:"NBIL", name:"GraniteShares 2x Long NBIS Daily ETF", exposure:"Leveraged Single Stock", pct:-19.83 },
+          { ticker:"PLUL", name:"Leverage Shares 2X Long PLUG Daily ETF", exposure:"Leveraged Single Stock", pct:-18.12 },
+          { ticker:"HIMZ", name:"Defiance Daily Target 2X Long HIMS ETF", exposure:"Leveraged Single Stock", pct:-18.08 }
         ]
       },
       valueIdeas: {
@@ -298,7 +298,7 @@
     }
 
     function render(){
-      document.getElementById("asof").textContent = `As of ${UPDATED_AT} • U.S. market hours snapshot`;
+      document.getElementById("asof").textContent = `As of ${UPDATED_AT} • U.S. market close snapshot`;
 
       const idxSorted = [...DATA.indexes].sort((a,b)=>{
         const ap = (a.pct === null || a.pct === undefined) ? -Infinity : a.pct;
