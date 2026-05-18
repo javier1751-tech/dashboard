@@ -3,859 +3,351 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Market Watch Dashboard</title>
+  <title>Market Dashboard</title>
   <style>
-:root {
-  color-scheme: light;
-  --bg: #f5f7f9;
-  --panel: #ffffff;
-  --text: #17202a;
-  --muted: #667085;
-  --line: #d9e0e7;
-  --gain: #087443;
-  --gain-bg: #e7f6ed;
-  --danger: #b42318;
-  --danger-bg: #fff0ed;
-  --accent: #175cd3;
-  --accent-bg: #eaf1ff;
-  --shadow: 0 12px 30px rgba(16, 24, 40, 0.08);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-.topbar {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 28px;
-  background: #ffffff;
-  border-bottom: 1px solid var(--line);
-}
-
-h1,
-h2,
-p {
-  margin: 0;
-}
-
-h1 {
-  margin-top: 4px;
-  font-size: 32px;
-  line-height: 1.1;
-}
-
-h2 {
-  font-size: 20px;
-  line-height: 1.2;
-}
-
-main {
-  width: min(1180px, 100%);
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.eyebrow {
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0;
-  text-transform: uppercase;
-}
-
-.subtle {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.narrow {
-  max-width: 360px;
-}
-
-.report-link,
-.filter {
-  min-height: 40px;
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--text);
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.filter.active,
-.report-link:hover,
-.filter:hover {
-  border-color: var(--accent);
-  background: var(--accent-bg);
-  color: var(--accent);
-}
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.summary-card,
-.panel,
-.watch-card,
-.candidate {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-}
-
-.summary-card {
-  min-height: 92px;
-  border-radius: 8px;
-  padding: 16px;
-}
-
-.summary-card span {
-  display: block;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.summary-card strong {
-  display: block;
-  margin-top: 10px;
-  font-size: 22px;
-  line-height: 1.1;
-}
-
-.summary-card.gain strong {
-  color: var(--gain);
-}
-
-.summary-card.danger strong {
-  color: var(--danger);
-}
-
-.panel {
-  border-radius: 8px;
-  padding: 18px;
-  margin-bottom: 18px;
-}
-
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 18px;
-  margin-bottom: 16px;
-}
-
-.section-head.compact {
-  align-items: center;
-}
-
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.watchlist {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.index-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.index-card {
-  border-top: 1px solid var(--line);
-  padding: 12px 0;
-}
-
-.index-card strong {
-  display: block;
-  font-size: 14px;
-}
-
-.index-level {
-  margin-top: 8px;
-  font-size: 21px;
-  font-weight: 850;
-}
-
-.index-card .move {
-  font-size: 14px;
-}
-
-.watch-card {
-  min-height: 176px;
-  border-radius: 8px;
-  padding: 14px;
-}
-
-.watch-card header {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-.ticker {
-  font-size: 20px;
-  font-weight: 850;
-}
-
-.type {
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: #eef2f6;
-  color: #344054;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.name {
-  min-height: 34px;
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.3;
-}
-
-.tag {
-  display: inline-block;
-  max-width: 100%;
-  margin-top: 8px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: #eef2f6;
-  color: #344054;
-  font-size: 12px;
-  font-weight: 800;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.price {
-  margin-top: 14px;
-  font-size: 24px;
-  font-weight: 850;
-}
-
-.move {
-  margin-top: 4px;
-  font-size: 16px;
-  font-weight: 850;
-}
-
-.move.up {
-  color: var(--gain);
-}
-
-.move.down {
-  color: var(--danger);
-}
-
-.flash-alert {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
-  border-radius: 999px;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 900;
-  line-height: 1;
-  vertical-align: 1px;
-  animation: flashPulse 1s ease-in-out infinite;
-}
-
-.flash-alert.up {
-  background: var(--gain);
-}
-
-.flash-alert.down {
-  background: var(--danger);
-}
-
-@keyframes flashPulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.38;
-    transform: scale(1.12);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flash-alert {
-    animation: none;
-  }
-}
-
-.why {
-  margin-top: 12px;
-  padding: 10px;
-  border-radius: 8px;
-  background: var(--danger-bg);
-  color: #7a271a;
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.why strong {
-  display: block;
-  margin-bottom: 3px;
-}
-
-.split {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.pill {
-  white-space: nowrap;
-  border-radius: 999px;
-  padding: 6px 9px;
-  background: #eef2f6;
-  color: #344054;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.mover-list {
-  display: grid;
-  gap: 8px;
-}
-
-.mover {
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 0;
-  border-top: 1px solid var(--line);
-}
-
-.mover:first-child {
-  border-top: 0;
-}
-
-.rank {
-  color: var(--muted);
-  font-weight: 850;
-}
-
-.mover-name strong,
-.candidate strong {
-  display: block;
-}
-
-.mover-name span {
-  display: block;
-  margin-top: 2px;
-  color: var(--muted);
-  font-size: 13px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.mover-name em {
-  display: inline-block;
-  max-width: 100%;
-  margin-top: 6px;
-  padding: 3px 7px;
-  border-radius: 999px;
-  background: #eef2f6;
-  color: #344054;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 800;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.candidate-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.candidate {
-  border-radius: 8px;
-  padding: 14px;
-}
-
-.candidate p {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-@media (max-width: 980px) {
-  .summary-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .watchlist,
-  .index-grid,
-  .candidate-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 720px) {
-  .topbar {
-    display: block;
-    padding: 20px;
-  }
-
-  .report-link {
-    display: inline-flex;
-    align-items: center;
-    margin-top: 14px;
-  }
-
-  main {
-    padding: 14px;
-  }
-
-  h1 {
-    font-size: 27px;
-  }
-
-  .section-head,
-  .split {
-    display: block;
-  }
-
-  .controls {
-    justify-content: flex-start;
-    margin-top: 12px;
-  }
-
-  .summary-grid,
-  .watchlist,
-  .index-grid,
-  .candidate-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .summary-card,
-  .watch-card {
-    min-height: auto;
-  }
-
-  .mover {
-    grid-template-columns: 34px minmax(0, 1fr) auto;
-  }
-}
-
+    :root{
+      color-scheme: light;
+      --bg:#0b1220;
+      --panel:#101a2f;
+      --panel-2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#9aa4b2;
+      --line:rgba(148,163,184,.18);
+      --gain:#22c55e;
+      --loss:#ef4444;
+      --chip:#0b1220;
+      --shadow:0 14px 34px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#070b14 0%, #0b1220 40%, #070b14 100%);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:inherit}
+    header{position:sticky;top:0;z-index:5;background:rgba(7,11,20,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .wrap{max-width:980px;margin:0 auto;padding:14px 14px}
+    .title{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+    h1{margin:0;font-size:18px;line-height:1.2;letter-spacing:.2px}
+    .meta{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.3}
+    .pillbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .pill{padding:7px 10px;border:1px solid var(--line);background:rgba(16,26,47,.65);border-radius:999px;font-size:12px;color:var(--muted)}
+    main{max-width:980px;margin:0 auto;padding:14px}
+    section{margin:14px 0}
+    .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px 0}
+    .sec-head h2{margin:0;font-size:14px;letter-spacing:.2px}
+    .sec-head .hint{color:var(--muted);font-size:12px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    @media (min-width:720px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .card{background:linear-gradient(180deg,rgba(16,26,47,.9) 0%, rgba(15,23,42,.88) 100%);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px}
+    .row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .sym{font-weight:800;font-size:14px;letter-spacing:.3px}
+    .name{margin-top:2px;color:var(--muted);font-size:12px;line-height:1.2}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .tag{font-size:11px;color:#cbd5e1;background:rgba(11,18,32,.75);border:1px solid rgba(148,163,184,.16);padding:4px 8px;border-radius:999px;white-space:nowrap}
+    .px{font-variant-numeric:tabular-nums; font-size:14px; font-weight:750}
+    .chg{margin-top:2px;font-variant-numeric:tabular-nums;font-size:12px}
+    .chg .pct{font-weight:800}
+    .gain{color:var(--gain)}
+    .loss{color:var(--loss)}
+    .flat{color:var(--muted)}
+    .na{color:var(--muted)}
+    .why{margin-top:10px;padding:9px 10px;border-radius:12px;background:rgba(11,18,32,.55);border:1px dashed rgba(148,163,184,.20);color:var(--muted);font-size:12px;line-height:1.35}
+    .why b{color:#e2e8f0}
+    .flash{display:inline-flex;align-items:center;gap:6px}
+    .flash .ic{display:inline-block;width:16px;text-align:center}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+    .flash.on{animation:pulse .85s linear infinite}
+    @media (prefers-reduced-motion: reduce){.flash.on{animation:none}}
+    .split{display:grid;grid-template-columns:1fr;gap:10px}
+    @media (min-width:720px){.split{grid-template-columns:1fr 1fr}}
+    .list{display:flex;flex-direction:column;gap:10px}
+    .mini{padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(16,26,47,.65)}
+    .mini h3{margin:0 0 8px 0;font-size:13px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px 6px;border-bottom:1px solid rgba(148,163,184,.12);font-size:12px;vertical-align:top}
+    th{color:var(--muted);font-weight:800;text-align:left}
+    td.num{text-align:right;font-variant-numeric:tabular-nums}
+    .foot{color:var(--muted);font-size:11px;line-height:1.35;margin-top:10px}
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <p class="eyebrow">Stock Market Workspace</p>
-      <h1>Market Watch Dashboard</h1>
-      <p class="subtle">Latest saved report: May 17, 2026. U.S. prices use the May 15 close; crypto uses latest 24h data from that report.</p>
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div>
+          <h1>Market Dashboard (Mobile)</h1>
+          <div class="meta" id="asof"></div>
+        </div>
+        <div class="pill" id="sourcePill">Sources: Barchart, WeeklyTrader, TipRanks, Slickcharts</div>
+      </div>
+      <div class="pillbar">
+        <div class="pill">Watchlist sorted by % change</div>
+        <div class="pill">Flash if |%| &gt; 2%</div>
+        <div class="pill">Unclassified if unclear</div>
+      </div>
     </div>
-    <span class="report-link">Mobile copy</span>
   </header>
-
   <main>
-    <section class="summary-grid" aria-label="Market summary">
-      <article class="summary-card danger">
-        <span>S&P 500</span>
-        <strong>-1.20%</strong>
-      </article>
-      <article class="summary-card danger">
-        <span>Nasdaq 100</span>
-        <strong>-1.51%</strong>
-      </article>
-      <article class="summary-card danger">
-        <span>Russell 2000</span>
-        <strong>-2.41%</strong>
-      </article>
-      <article class="summary-card gain">
-        <span>Best Watchlist</span>
-        <strong>ETH +0.46%</strong>
-      </article>
-      <article class="summary-card danger">
-        <span>Worst Watchlist</span>
-        <strong>F -7.46%</strong>
-      </article>
-      <article class="summary-card neutral">
-        <span>Move Alerts</span>
-        <strong>2 names</strong>
-      </article>
+    <section>
+      <div class="sec-head">
+        <h2>Major Indexes &amp; Macro Snapshot</h2>
+        <div class="hint">Sorted by % change (N/A last)</div>
+      </div>
+      <div class="grid" id="indexes"></div>
+      <div class="foot">Unavailable items are shown as N/A when a clean quote snapshot wasn’t accessible at update time.</div>
     </section>
 
-    <section class="panel">
-      <div class="section-head compact">
-        <div>
-          <p class="eyebrow">Current Levels</p>
-          <h2>Major Indexes</h2>
-        </div>
-        <span class="pill">Latest close</span>
+    <section>
+      <div class="sec-head">
+        <h2>Tracked Watchlist</h2>
+        <div class="hint">Active symbols from ETF_DAILY_TRACKER.md</div>
       </div>
-      <div class="index-grid" id="indexes"></div>
-    </section>
-
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Your List</p>
-          <h2>Watchlist</h2>
-        </div>
-        <div class="controls" role="group" aria-label="Watchlist filter">
-          <button class="filter active" data-filter="all">All</button>
-          <button class="filter" data-filter="alert">Over 2%</button>
-          <button class="filter" data-filter="etf">ETFs</button>
-          <button class="filter" data-filter="stock">Stocks</button>
-          <button class="filter" data-filter="crypto">Crypto</button>
-        </div>
-      </div>
-      <div class="watchlist" id="watchlist"></div>
+      <div class="grid" id="watchlist"></div>
     </section>
 
     <section class="split">
-      <article class="panel">
-        <div class="section-head compact">
-          <div>
-            <p class="eyebrow">Entire Market</p>
-            <h2>Top ETF Movers</h2>
-          </div>
-          <span class="pill">Leveraged heavy</span>
-        </div>
-        <div class="mover-list" id="topEtfs"></div>
-      </article>
-
-      <article class="panel">
-        <div class="section-head compact">
-          <div>
-            <p class="eyebrow">Entire Market</p>
-            <h2>Bottom ETF Movers</h2>
-          </div>
-          <span class="pill">Leveraged heavy</span>
-        </div>
-        <div class="mover-list" id="bottomEtfs"></div>
-      </article>
+      <div class="mini">
+        <h3>Entire-Market Movers (Stocks) — Top 5</h3>
+        <table>
+          <thead><tr><th>Ticker</th><th>Name</th><th>Sector / Industry</th><th class="num">% 1D</th></tr></thead>
+          <tbody id="stocksGainers"></tbody>
+        </table>
+      </div>
+      <div class="mini">
+        <h3>Entire-Market Movers (Stocks) — Bottom 5</h3>
+        <table>
+          <thead><tr><th>Ticker</th><th>Name</th><th>Sector / Industry</th><th class="num">% 1D</th></tr></thead>
+          <tbody id="stocksLosers"></tbody>
+        </table>
+      </div>
     </section>
 
     <section class="split">
-      <article class="panel">
-        <div class="section-head compact">
-          <div>
-            <p class="eyebrow">Entire Market</p>
-            <h2>Top Stock Movers</h2>
-          </div>
-          <span class="pill">Volatile names</span>
-        </div>
-        <div class="mover-list" id="topStocks"></div>
-      </article>
-
-      <article class="panel">
-        <div class="section-head compact">
-          <div>
-            <p class="eyebrow">Entire Market</p>
-            <h2>Bottom Stock Movers</h2>
-          </div>
-          <span class="pill">Volatile names</span>
-        </div>
-        <div class="mover-list" id="bottomStocks"></div>
-      </article>
+      <div class="mini">
+        <h3>Entire-Market Movers (ETFs) — Top 5</h3>
+        <table>
+          <thead><tr><th>Ticker</th><th>Name</th><th>Exposure Tag</th><th class="num">% 1D</th></tr></thead>
+          <tbody id="etfGainers"></tbody>
+        </table>
+      </div>
+      <div class="mini">
+        <h3>Entire-Market Movers (ETFs) — Bottom 5</h3>
+        <table>
+          <thead><tr><th>Ticker</th><th>Name</th><th>Exposure Tag</th><th class="num">% 1D</th></tr></thead>
+          <tbody id="etfLosers"></tbody>
+        </table>
+      </div>
     </section>
 
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Research Ideas</p>
-          <h2>Value Candidates</h2>
-        </div>
-        <p class="subtle narrow">Research candidates only, not personalized financial advice.</p>
+    <section class="split">
+      <div class="mini">
+        <h3>Value Research Candidates (ETFs) — Ideas only</h3>
+        <div class="foot">Not financial advice; research prompts to explore valuation / cashflows / holdings.</div>
+        <div class="list" id="valueEtfs"></div>
       </div>
-      <div class="candidate-grid" id="candidates"></div>
+      <div class="mini">
+        <h3>Value Research Candidates (Stocks) — Ideas only</h3>
+        <div class="foot">Not financial advice; verify fundamentals, catalysts, and downside risk.</div>
+        <div class="list" id="valueStocks"></div>
+      </div>
     </section>
   </main>
 
   <script>
-const watchlist = [
-  { ticker: "VOO", name: "Vanguard S&P 500 ETF", type: "etf", tag: "Broad market", price: "$679.44", move: -1.21 },
-  { ticker: "VGT", name: "Vanguard Information Technology ETF", type: "etf", tag: "Technology", price: "$113.31", move: -1.63 },
-  { ticker: "BTC", name: "Bitcoin", type: "crypto", tag: "Crypto", price: "$78,095.00", move: -0.19, suffix: "24h" },
-  { ticker: "ETH", name: "Ethereum", type: "crypto", tag: "Crypto", price: "$2,185.38", move: 0.46, suffix: "24h" },
-  { ticker: "SCHD", name: "Schwab U.S. Dividend Equity ETF", type: "etf", tag: "Dividend value", price: "$31.72", move: -0.25 },
-  { ticker: "JEPI", name: "JPMorgan Equity Premium Income ETF", type: "etf", tag: "Equity income", price: "$55.89", move: -0.18 },
-  { ticker: "QQQ", name: "Invesco QQQ Trust", type: "etf", tag: "Large-cap growth", price: "$708.93", move: -1.51 },
-  { ticker: "BRK.B", name: "Berkshire Hathaway Class B", type: "stock", tag: "Financials", price: "$482.70", move: -0.28 },
-  {
-    ticker: "MDLN",
-    name: "Medline Inc",
-    type: "stock",
-    tag: "Healthcare",
-    price: "$36.19",
-    move: -6.97,
-    why: "No clear single catalyst found in the saved report. Flagged for verification; weakness likely tied to sharp stock-specific selling and high volume."
-  },
-  {
-    ticker: "F",
-    name: "Ford Motor Company",
-    type: "stock",
-    tag: "Consumer cyclical",
-    price: "$13.40",
-    move: -7.46,
-    why: "No clear single catalyst found in the saved report. Likely context: broad risk-off session, cyclical auto pressure, and heavy volume."
-  },
-  {
-    ticker: "VZ",
-    name: "Verizon Communications",
-    type: "stock",
-    tag: "Communication services",
-    price: "Pending",
-    move: 0,
-    why: "Newly added to tracker; price will populate on the next market data refresh."
-  },
-  {
-    ticker: "CSCO",
-    name: "Cisco Systems",
-    type: "stock",
-    tag: "Technology",
-    price: "Pending",
-    move: 0,
-    why: "Newly added to tracker; price will populate on the next market data refresh."
-  },
-  {
-    ticker: "CIEN",
-    name: "Ciena Corporation",
-    type: "stock",
-    tag: "Technology",
-    price: "Pending",
-    move: 0,
-    why: "Newly added to tracker; price will populate on the next market data refresh."
-  },
-  {
-    ticker: "FJTSY",
-    name: "Fujitsu Ltd ADR",
-    type: "stock",
-    tag: "Technology",
-    price: "Pending",
-    move: 0,
-    why: "Newly added to tracker; price will populate on the next market data refresh."
-  },
-  {
-    ticker: "T",
-    name: "AT&T",
-    type: "stock",
-    tag: "Communication services",
-    price: "Pending",
-    move: 0,
-    why: "Newly added to tracker; price will populate on the next market data refresh."
-  },
-  {
-    ticker: "TMUS",
-    name: "T-Mobile US",
-    type: "stock",
-    tag: "Communication services",
-    price: "Pending",
-    move: 0,
-    why: "Newly added to tracker; price will populate on the next market data refresh."
-  }
-];
+    const UPDATED_AT = "2026-05-18 09:05 CDT";
 
-const indexes = [
-  { name: "S&P 500", level: "7,408.50", points: -92.74, move: -1.24 },
-  { name: "Nasdaq Composite", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
-  { name: "Nasdaq 100", level: "29,125.20", points: -455.10, move: -1.54 },
-  { name: "Dow Jones", level: "49,526.17", points: -537.29, move: -1.07 },
-  { name: "Russell 2000", level: "277.60", points: -6.85, move: -2.41, note: "IWM ETF proxy" },
-  { name: "S&P MidCap 400", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
-  { name: "S&P SmallCap 600", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
-  { name: "VIX", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
-  { name: "10Y Treasury", level: "N/A", points: null, move: null, note: "Quote unavailable from latest source" },
-  { name: "Oil", level: "$148.23", points: 5.23, move: 3.66, note: "USO ETF proxy" },
-  { name: "Gold", level: "$417.29", points: -9.92, move: -2.32, note: "GLD ETF proxy" },
-  { name: "Bitcoin", level: "$77,914.00", points: null, move: -0.42, note: "24h" },
-  { name: "Ethereum", level: "$2,178.46", points: null, move: 0.06, note: "24h" }
-];
+    const DATA = {
+      indexes: [
+        { key: "SP500", label: "S&P 500", price: 7407.80, chg: null, pct: -0.01, tags: ["Index","US Large Cap"], source: "WeeklyTrader.io (indices snapshot)" },
+        { key: "NASDAQ", label: "Nasdaq Composite", price: 29156.98, chg: null, pct: 0.11, tags: ["Index","US Composite"], source: "WeeklyTrader.io (indices snapshot)" },
+        { key: "NASDAQ100", label: "Nasdaq 100 (QQQ proxy)", price: 709.40, chg: null, pct: 0.07, tags: ["Index Proxy","US Tech-heavy"], source: "Barchart (QQQ quote)" },
+        { key: "DOW", label: "Dow Jones Industrial Average", price: 49507.60, chg: null, pct: -0.04, tags: ["Index","US Blue Chips"], source: "WeeklyTrader.io (indices snapshot)" },
+        { key: "RUT", label: "Russell 2000 (IWM proxy)", price: 276.45, chg: null, pct: -0.41, tags: ["Index Proxy","US Small Cap"], source: "Barchart (IWM quote)" },
+        { key: "MID", label: "S&P MidCap 400", price: 3670.18, chg: null, pct: 0.44, tags: ["Index","US Mid Cap"], source: "Barchart ($IDX quote)" },
+        { key: "SML", label: "S&P SmallCap 600", price: 1629.28, chg: null, pct: -1.62, tags: ["Index","US Small Cap"], source: "Barchart ($IQY quote)" },
+        { key: "VIX", label: "VIX", price: 18.79, chg: null, pct: 1.95, tags: ["Volatility"], source: "Barchart ($VIX quote)" },
+        { key: "US10Y", label: "10-Year Treasury Yield", price: 4.59, chg: null, pct: null, tags: ["Rates","Macro"], source: "Slickcharts (as of close 2026-05-15)" },
+        { key: "WTI", label: "WTI Crude Oil (CL front)", price: 105.42, chg: null, pct: 4.20, tags: ["Commodities","Energy"], source: "Barchart (CLM26)" },
+        { key: "GOLD", label: "Gold (GC front)", price: 4573.30, chg: null, pct: 0.25, tags: ["Commodities","Precious Metals"], source: "Barchart (GCM26)" },
+        { key: "BTC", label: "Bitcoin (BTC/USD)", price: 76952.01, chg: null, pct: -2.70, tags: ["Crypto"], source: "Barchart (^BTCUSD quote)" },
+        { key: "ETH", label: "Ethereum (ETH/USD)", price: 2141.760, chg: null, pct: -3.49, tags: ["Crypto"], source: "Barchart (^ETHUSD quote)" }
+      ],
+      watchlist: [
+        { ticker: "MDLN", name: "MDLN (verify)", price: 36.87, chg: null, pct: 1.88, tags: ["Stock","Unclassified"], why: null },
+        { ticker: "VOO", name: "Vanguard S&P 500 ETF", price: 680.33, chg: null, pct: 0.13, tags: ["ETF","Broad Market","S&P 500"], why: null },
+        { ticker: "QQQ", name: "Invesco QQQ Trust", price: 709.40, chg: null, pct: 0.07, tags: ["ETF","Nasdaq 100","Technology-heavy"], why: null },
+        { ticker: "SCHD", name: "Schwab U.S. Dividend Equity ETF", price: 31.70, chg: null, pct: -0.06, tags: ["ETF","Dividend Equity","Broad U.S."], why: null },
+        { ticker: "CSCO", name: "Cisco Systems", price: 118.10, chg: null, pct: -0.09, tags: ["Stock","Technology","Networking"], why: null },
+        { ticker: "JEPI", name: "JPMorgan Equity Premium Income ETF", price: 55.82, chg: null, pct: -0.13, tags: ["ETF","Equity Income","Covered Calls"], why: null },
+        { ticker: "VGT", name: "Vanguard Information Technology ETF", price: 112.97, chg: null, pct: -0.30, tags: ["ETF","Technology","U.S. Equity"], why: null },
+        { ticker: "BRK.B", name: "Berkshire Hathaway Class B", price: 482.70, chg: null, pct: -0.28, tags: ["Stock","Financials","Conglomerate"], why: null },
+        { ticker: "FJTSY", name: "Fujitsu Ltd ADR", price: 20.44, chg: null, pct: -1.30, tags: ["Stock","Technology","Japan ADR"], why: null },
+        { ticker: "VZ", name: "Verizon Communications", price: 46.37, chg: null, pct: -1.47, tags: ["Stock","Communication Services","Telecom"], why: null },
+        { ticker: "TMUS", name: "T-Mobile US", price: 185.22, chg: null, pct: -1.58, tags: ["Stock","Communication Services","Wireless"], why: null },
+        { ticker: "ETH", name: "Ethereum", price: 2141.760, chg: null, pct: -3.49, tags: ["Crypto","Layer 1"], why: "Macro-driven risk-off + weak sentiment (crypto selloff). <a href=\"https://www.fxstreet.com/cryptocurrencies/news/crypto-today-bitcoin-ethereum-xrp-extend-decline-as-weak-sentiment-etf-outflows-weigh-202605181200\" target=\"_blank\" rel=\"noreferrer\">Source</a>." },
+        { ticker: "BTC", name: "Bitcoin", price: 76952.01, chg: null, pct: -2.70, tags: ["Crypto","Store of Value"], why: "Risk-off move + liquidation/outflow narrative in crypto markets. <a href=\"https://www.fxstreet.com/cryptocurrencies/news/crypto-today-bitcoin-ethereum-xrp-extend-decline-as-weak-sentiment-etf-outflows-weigh-202605181200\" target=\"_blank\" rel=\"noreferrer\">Source</a>." },
+        { ticker: "T", name: "AT&T", price: 24.03, chg: null, pct: -2.52, tags: ["Stock","Communication Services","Telecom"], why: "No clear catalyst found; likely rotation/rate-sensitivity. Check session headlines for a specific trigger." },
+        { ticker: "CIEN", name: "Ciena Corporation", price: 527.39, chg: null, pct: -4.88, tags: ["Stock","Technology","Networking"], why: "No clear catalyst found; likely tech/networking risk-off and/or company-specific headline flow." },
+        { ticker: "F", name: "Ford Motor Company", price: 13.40, chg: null, pct: -7.46, tags: ["Stock","Consumer Discretionary","Automotive"], why: "No clear catalyst found; likely cyclicals risk-off or a headline/analyst action." }
+      ],
+      movers: {
+        stocksTop: [
+          { ticker:"OXY", name:"Occidental Petroleum", sector:"Energy", industry:"Energy", pct:4.89 },
+          { ticker:"SNOW", name:"Snowflake Inc.", sector:"Technology", industry:"Technology", pct:4.45 },
+          { ticker:"CRM", name:"Salesforce Inc.", sector:"Technology", industry:"Technology", pct:3.54 },
+          { ticker:"XOM", name:"Exxon Mobil", sector:"Energy", industry:"Energy", pct:3.36 },
+          { ticker:"MSFT", name:"Microsoft Corporation", sector:"Technology", industry:"Technology", pct:3.05 }
+        ],
+        stocksBottom: [
+          { ticker:"COIN", name:"Coinbase Global", sector:"Financial Services", industry:"Financial Services", pct:-7.82 },
+          { ticker:"F", name:"Ford Motor", sector:"Consumer Discretionary", industry:"Consumer Discretionary", pct:-7.46 },
+          { ticker:"INTC", name:"Intel Corporation", sector:"Technology", industry:"Technology", pct:-6.18 },
+          { ticker:"AMD", name:"Advanced Micro Devices", sector:"Technology", industry:"Technology", pct:-5.69 },
+          { ticker:"RIVN", name:"Rivian Automotive", sector:"Consumer Discretionary", industry:"Consumer Discretionary", pct:-5.03 }
+        ],
+        etfsTop: [
+          { ticker:"SOXS", name:"Direxion Daily Semiconductor Bear 3x Shares", exposure:"Semiconductors (Inverse/Leveraged)", pct:11.61 },
+          { ticker:"SQQQ", name:"ProShares UltraPro Short QQQ", exposure:"Nasdaq 100 (Inverse/Leveraged)", pct:4.65 },
+          { ticker:"SNXX", name:"Tradr 2X Long SNDK Daily ETF", exposure:"Leveraged Single Stock", pct:3.68 },
+          { ticker:"USO", name:"United States Oil Fund LP", exposure:"WTI Crude Oil", pct:3.66 },
+          { ticker:"XOP", name:"SPDR S&P Oil & Gas E&P ETF", exposure:"Energy (E&P)", pct:2.90 }
+        ],
+        etfsBottom: [
+          { ticker:"GDXU", name:"MicroSectors Gold Miners 3X Leveraged ETN", exposure:"Gold Miners (Leveraged)", pct:-21.13 },
+          { ticker:"KORU", name:"Direxion MSCI Daily South Korea Bull 3X Shares", exposure:"International Equity (Leveraged)", pct:-18.32 },
+          { ticker:"AGQ", name:"ProShares Ultra Silver", exposure:"Silver (Leveraged)", pct:-17.62 },
+          { ticker:"MUU", name:"Direxion Daily MU Bull 2X Shares", exposure:"Leveraged Single Stock", pct:-13.08 },
+          { ticker:"SOXL", name:"Direxion Daily Semiconductor Bull 3x Shares", exposure:"Semiconductors (Leveraged)", pct:-11.82 }
+        ]
+      },
+      valueIdeas: {
+        etfs: [
+          { ticker:"SCHD", name:"Schwab U.S. Dividend Equity ETF", tags:["Dividend Equity","Quality/Dividend"], note:"Research angle: sector tilts + dividend sustainability vs VOO/SPY." },
+          { ticker:"VOO", name:"Vanguard S&P 500 ETF", tags:["Broad Market","Core"], note:"Research angle: benchmark core holding; compare fee, tracking, and tax efficiency vs peers." },
+          { ticker:"VTV", name:"Vanguard Value ETF", tags:["Value","Large Cap"], note:"Research angle: value factor exposure, sector concentration, and drawdown behavior." }
+        ],
+        stocks: [
+          { ticker:"VZ", name:"Verizon", tags:["Telecom","Cash Flow"], note:"Research angle: leverage, dividend coverage, and competitive intensity." },
+          { ticker:"T", name:"AT&T", tags:["Telecom","Yield"], note:"Research angle: free cash flow durability, capex path, and balance sheet trajectory." },
+          { ticker:"CSCO", name:"Cisco Systems", tags:["Tech","Value-ish"], note:"Research angle: recurring mix, margins, and AI/networking demand trends." }
+        ]
+      }
+    };
 
-const movers = {
-  topEtfs: [
-    ["FIGG", "2x Long FIG Daily ETF", "Leveraged single stock", 25.74],
-    ["GDXD", "-3x Gold Miners ETN", "Inverse gold miners", 21.61],
-    ["IONZ", "2x Short IONQ ETF", "Inverse single stock", 18.88],
-    ["ZSL", "UltraShort Silver", "Inverse precious metals", 17.36],
-    ["QBTZ", "2x Short QBTS ETF", "Inverse single stock", 16.09]
-  ],
-  bottomEtfs: [
-    ["GDXU", "3x Gold Miners ETN", "Leveraged gold miners", -21.13],
-    ["IONX", "2x Long IONQ ETF", "Leveraged single stock", -19.18],
-    ["IONL", "2x Long IONQ ETF", "Leveraged single stock", -19.13],
-    ["BMNG", "2x Long BMNR ETF", "Leveraged single stock", -19.07],
-    ["TXXS", "2x Long Sui ETF", "Crypto-linked", -19.05]
-  ],
-  topStocks: [
-    ["HCWB", "HCW Biologics", "Healthcare", 262.02],
-    ["PIII", "P3 Health Partners", "Healthcare", 180.15],
-    ["MRNO", "Murano Global Investments", "Real estate", 94.24],
-    ["AUUD", "Auddia", "Communication services", 60.66],
-    ["SLE", "Super League Enterprise", "Communication services", 48.40]
-  ],
-  bottomStocks: [
-    ["ELPW", "Elong Power Holding", "Industrials", -51.03],
-    ["WOK", "WORK Medical Technology", "Healthcare", -49.23],
-    ["LNZA", "LanzaTech Global", "Industrials", -43.27],
-    ["SLXN", "Silexion Therapeutics", "Healthcare", -42.06],
-    ["GAMB", "Gambling.com Group", "Communication services", -42.03]
-  ]
-};
+    function fmtNum(n, digits=2){
+      if(n === null || n === undefined || Number.isNaN(n)) return "N/A";
+      return Number(n).toLocaleString(undefined,{minimumFractionDigits:digits,maximumFractionDigits:digits});
+    }
+    function fmtPct(n){
+      if(n === null || n === undefined || Number.isNaN(n)) return "N/A";
+      const v = Number(n);
+      const s = Math.abs(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+      return (v>0?"+":"") + s + "%";
+    }
+    function clsForPct(pct){
+      if(pct === null || pct === undefined || Number.isNaN(pct)) return "na";
+      if(pct > 0) return "gain";
+      if(pct < 0) return "loss";
+      return "flat";
+    }
+    function flashMeta(pct){
+      if(pct === null || pct === undefined || Number.isNaN(pct)) return { on:false, icon:"" };
+      if(pct > 2) return { on:true, icon:"▲" };
+      if(pct < -2) return { on:true, icon:"▼" };
+      return { on:false, icon:"" };
+    }
 
-const candidates = [
-  ["SCHD", "ETF", "Dividend value", "Dividend-quality ETF; useful for income and quality at low cost. Risk: can lag growth-led markets."],
-  ["VTV", "ETF", "U.S. value", "Broad U.S. value exposure. Risk: value can stay out of favor for long stretches."],
-  ["VIGI", "ETF", "International dividends", "International dividend growth exposure. Risk: currency and non-U.S. equity risk."],
-  ["BRK.B", "Stock", "Financials", "Diversified, cash-rich quality compounder. Risk: valuation and succession."],
-  ["F", "Stock", "Consumer cyclical", "Beaten-down cyclical value setup. Risk: autos are cyclical and execution-sensitive."],
-  ["PFE", "Stock", "Healthcare", "Defensive healthcare value/turnaround candidate. Risk: pipeline and patent-cliff execution."]
-];
+    function renderCard(item, opts){
+      const pctCls = clsForPct(item.pct);
+      const flash = flashMeta(item.pct);
+      const pctText = fmtPct(item.pct);
+      const pxText = item.price === null ? "N/A" : (opts.isYield ? fmtNum(item.price,3) + "%" : "$" + fmtNum(item.price, (item.price>=1000?0:2)));
+      const derivedChg = (item.chg === null || item.chg === undefined) && (item.price !== null && item.price !== undefined) && (item.pct !== null && item.pct !== undefined)
+        ? (() => {
+            const denom = 1 + (Number(item.pct) / 100);
+            if(!Number.isFinite(denom) || denom === 0) return null;
+            const prev = Number(item.price) / denom;
+            const delta = Number(item.price) - prev;
+            return Number.isFinite(delta) ? delta : null;
+          })()
+        : item.chg;
+      const chgText = (derivedChg === null || derivedChg === undefined || Number.isNaN(derivedChg)) ? "N/A" : (derivedChg>0?"+":"") + fmtNum(derivedChg, 2);
+      const why = item.why && Math.abs(item.pct || 0) > 2 ? item.why : null;
 
-const formatMove = (value, suffix = "") => `${value > 0 ? "+" : ""}${value.toFixed(2)}%${suffix ? ` ${suffix}` : ""}`;
-const formatPoints = (value) => value === null ? "" : `${value > 0 ? "+" : ""}${value.toFixed(2)} pts`;
-const alertIcon = (value) => {
-  if (value === null || Math.abs(value) <= 2) return "";
-  const direction = value > 0 ? "up" : "down";
-  const symbol = value > 0 ? "▲" : "▼";
-  const label = value > 0 ? "Up more than 2%" : "Down more than 2%";
-  return `<span class="flash-alert ${direction}" aria-label="${label}" title="${label}">${symbol}</span>`;
-};
-
-function renderWatchlist(filter = "all") {
-  const target = document.querySelector("#watchlist");
-  const filtered = watchlist
-    .filter((item) => {
-      if (filter === "all") return true;
-      if (filter === "alert") return Math.abs(item.move) > 2;
-      return item.type === filter;
-    })
-    .sort((a, b) => b.move - a.move);
-
-  target.innerHTML = filtered.map((item) => {
-    const direction = item.move >= 0 ? "up" : "down";
-    const alert = Math.abs(item.move) > 2;
-    return `
-      <article class="watch-card" data-type="${item.type}">
-        <header>
-          <div class="ticker">${item.ticker}</div>
-          <div class="type">${item.type}</div>
-        </header>
-        <p class="name">${item.name}</p>
-        <div class="tag">${item.tag}</div>
-        <div class="price">${item.price}</div>
-        <div class="move ${direction}">${alertIcon(item.move)}${formatMove(item.move, item.suffix)}</div>
-        ${alert ? `<div class="why"><strong>Why it moved</strong>${item.why}</div>` : ""}
-      </article>
-    `;
-  }).join("");
-}
-
-function renderIndexes() {
-  const sortedIndexes = [...indexes].sort((a, b) => {
-    if (a.move === null && b.move === null) return 0;
-    if (a.move === null) return 1;
-    if (b.move === null) return -1;
-    return b.move - a.move;
-  });
-
-  document.querySelector("#indexes").innerHTML = sortedIndexes.map((item) => {
-    const unavailable = item.move === null;
-    const direction = !unavailable && item.move >= 0 ? "up" : "down";
-    return `
-      <article class="index-card">
-        <strong>${item.name}</strong>
-        <div class="index-level">${item.level}</div>
-        <div class="move ${unavailable ? "" : direction}">
-          ${unavailable ? "Unavailable" : `${alertIcon(item.move)}${formatPoints(item.points)} ${formatMove(item.move, item.note === "24h" ? "24h" : "")}`}
+      const tags = (item.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+      return `
+        <div class="card">
+          <div class="row">
+            <div>
+              <div class="sym">${opts.showTicker ? item.ticker : item.label}</div>
+              <div class="name">${opts.showName ? item.name : ""}</div>
+            </div>
+            <div style="text-align:right">
+              <div class="px">${pxText}</div>
+              <div class="chg ${pctCls}">
+                <span class="flash ${flash.on ? "on" : ""}">
+                  <span class="ic">${flash.icon}</span>
+                  <span class="pct">${pctText}</span>
+                </span>
+                <span class="flat"> (${chgText})</span>
+              </div>
+            </div>
+          </div>
+          <div class="tags">${tags}</div>
+          ${opts.showSource ? `<div class="foot">Source: ${item.source || "N/A"}</div>` : ""}
+          ${why ? `<div class="why"><b>Why it moved:</b> ${why}</div>` : ""}
         </div>
-        ${item.note && item.note !== "24h" ? `<p class="subtle">${item.note}</p>` : ""}
-      </article>
-    `;
-  }).join("");
-}
+      `;
+    }
 
-function renderMovers(key, elementId) {
-  document.querySelector(`#${elementId}`).innerHTML = movers[key].map((item, index) => {
-    const [ticker, name, sector, move] = item;
-    const direction = move >= 0 ? "up" : "down";
-    return `
-      <div class="mover">
-        <div class="rank">${index + 1}</div>
-        <div class="mover-name">
-          <strong>${ticker}</strong>
-          <span>${name}</span>
-          <em>${sector}</em>
-        </div>
-        <div class="move ${direction}">${alertIcon(move)}${formatMove(move)}</div>
-      </div>
-    `;
-  }).join("");
-}
+    function render(){
+      document.getElementById("asof").textContent = `As of ${UPDATED_AT} • U.S. market hours snapshot`;
 
-function renderCandidates() {
-  document.querySelector("#candidates").innerHTML = candidates.map(([ticker, type, tag, note]) => `
-    <article class="candidate">
-      <strong>${ticker} <span class="type">${type}</span></strong>
-      <div class="tag">${tag}</div>
-      <p>${note}</p>
-    </article>
-  `).join("");
-}
+      const idxSorted = [...DATA.indexes].sort((a,b)=>{
+        const ap = (a.pct === null || a.pct === undefined) ? -Infinity : a.pct;
+        const bp = (b.pct === null || b.pct === undefined) ? -Infinity : b.pct;
+        if(ap === -Infinity && bp === -Infinity) return 0;
+        if(ap === -Infinity) return 1;
+        if(bp === -Infinity) return -1;
+        return bp - ap;
+      });
+      document.getElementById("indexes").innerHTML = idxSorted.map(i => renderCard(i,{showTicker:false,showName:false,showSource:true,isYield:i.key==="US10Y"})).join("");
 
-document.querySelectorAll(".filter").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".filter").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    renderWatchlist(button.dataset.filter);
-  });
-});
+      const watchSorted = [...DATA.watchlist].sort((a,b)=>{
+        const ap = (a.pct === null || a.pct === undefined) ? -Infinity : a.pct;
+        const bp = (b.pct === null || b.pct === undefined) ? -Infinity : b.pct;
+        if(ap === -Infinity && bp === -Infinity) return 0;
+        if(ap === -Infinity) return 1;
+        if(bp === -Infinity) return -1;
+        return bp - ap;
+      });
+      document.getElementById("watchlist").innerHTML = watchSorted.map(w => renderCard(w,{showTicker:true,showName:true,showSource:false,isYield:false})).join("");
 
-renderWatchlist();
-renderIndexes();
-renderMovers("topEtfs", "topEtfs");
-renderMovers("bottomEtfs", "bottomEtfs");
-renderMovers("topStocks", "topStocks");
-renderMovers("bottomStocks", "bottomStocks");
-renderCandidates();
+      function rowHTML(r, isEtf){
+        const pctCls = clsForPct(r.pct);
+        const flash = flashMeta(r.pct);
+        const exposure = isEtf ? (r.exposure || "Unclassified") : `${r.sector}${r.industry ? " / " + r.industry : ""}`;
+        return `<tr>
+          <td><b>${r.ticker}</b></td>
+          <td>${r.name}</td>
+          <td>${exposure}</td>
+          <td class="num ${pctCls}"><span class="flash ${flash.on ? "on" : ""}"><span class="ic">${flash.icon}</span><span class="pct">${fmtPct(r.pct)}</span></span></td>
+        </tr>`;
+      }
+      document.getElementById("stocksGainers").innerHTML = DATA.movers.stocksTop.map(r => rowHTML(r,false)).join("");
+      document.getElementById("stocksLosers").innerHTML = DATA.movers.stocksBottom.map(r => rowHTML(r,false)).join("");
+      document.getElementById("etfGainers").innerHTML = DATA.movers.etfsTop.map(r => rowHTML(r,true)).join("");
+      document.getElementById("etfLosers").innerHTML = DATA.movers.etfsBottom.map(r => rowHTML(r,true)).join("");
 
+      function ideaCard(i){
+        const tags = (i.tags||[]).map(t=>`<span class="tag">${t}</span>`).join("");
+        return `<div class="card">
+          <div class="row"><div><div class="sym">${i.ticker}</div><div class="name">${i.name}</div></div></div>
+          <div class="tags">${tags}</div>
+          <div class="why"><b>Research angle:</b> ${i.note}</div>
+        </div>`;
+      }
+      document.getElementById("valueEtfs").innerHTML = DATA.valueIdeas.etfs.map(ideaCard).join("");
+      document.getElementById("valueStocks").innerHTML = DATA.valueIdeas.stocks.map(ideaCard).join("");
+    }
+    render();
   </script>
 </body>
 </html>
